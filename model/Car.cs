@@ -14,6 +14,8 @@ namespace AutoStore
         public double Origin;
         public string CarName;
         public decimal Price;
+        public int Id;
+        public static int IdCounter = 0;
 
         public static Car DataFromCsv(string carInfo){
 
@@ -31,6 +33,8 @@ namespace AutoStore
             newCar.CarName= carFields[8];
             // get random price in range of 10,000-20,000
             newCar.Price=Math.Round(NextDecimal());
+            IdCounter++;
+            newCar.Id = IdCounter;
 
             return newCar;
         }
@@ -43,7 +47,7 @@ namespace AutoStore
        }
 
        public override string ToString(){
-           return $"Mpg: {Mpg}, Cylinders: {Cylinders}, Displacement: {Displacement}, Horsepower: {Horsepower}, Weight: {Weight}, Acceleration: {Acceleration}, ModelYear: {ModelYear}, Origin: {Origin}, Name: {CarName}, Price: ${Price}";
+           return $"ID: {Id} ,Mpg: {Mpg}, Cylinders: {Cylinders}, Displacement: {Displacement}, Horsepower: {Horsepower}, Weight: {Weight}, Acceleration: {Acceleration}, ModelYear: {ModelYear}, Origin: {Origin}, Name: {CarName}, Price: ${Price}";
        }
 
 

@@ -9,7 +9,13 @@ namespace AutoStore
     {
         static void Main(string[] args)
         {
+            //Bank and user's money management
+            CBank.Bank NewBank = new CBank.Bank(){ BankName = "LNT" };
+            CBank.User NewUser = new CBank.User(){ name = "John" };
+            CBank.Checking NewUserChecking = new CBank.Checking(NewUser, NewBank);
+            decimal balance = (decimal) NewUserChecking.Deposit(15000.00);
 
+            // The carInventory and search Logic
             List<Car>CarInventory=File.ReadAllLines("./data/auto-mpg.csv").Skip(1).Select(carInfo=>Car.DataFromCsv(carInfo)).ToList();
 
             Analytics Analytics = new Analytics(CarInventory);              
@@ -17,10 +23,39 @@ namespace AutoStore
             bool loopOption = true;
 
             while(loopOption){
+                balance = (decimal) NewUserChecking.Balance;
+                Console.WriteLine($"Your balance is: ${balance}");
+                Console.WriteLine("Do you want to deposit/withdraw money? Answer with Yes or No");
+                var userAccountAction = Console.ReadLine().ToLower();
+                if(userAccountAction == "yes"){
+                Console.WriteLine("What type of transaction are you making? Answer with Deposit or Withdraw");
+                var userAccountDecistion = Console.ReadLine().ToLower();
+                if(userAccountDecistion == "deposit"){
+                    Console.WriteLine("Deposit amount: ");
+                    var depoAmount = Convert.ToDouble(Console.ReadLine());
 
+                    balance = (decimal) NewUserChecking.Deposit(depoAmount);
+                    continue;
+                }else if(userAccountDecistion == "withdraw"){
+
+                    Console.WriteLine("Withdrawal amount: ");
+                    var withdAmount = Convert.ToDouble(Console.ReadLine());
+
+                    balance = (decimal) NewUserChecking.Withdraw(withdAmount);
+                    continue;
+
+                }else{
+                    continue;
+                }
+
+                    
+                }
+
+                // The carInventory and search Logic
                 Console.WriteLine("Write 1 to see the inventory");
                 Console.WriteLine("Write 2 to search the inventory by price range");
                 Console.WriteLine("Write 3 to search the inventory by other option");
+                Console.WriteLine("Write 4 to purchase a car by id");
                 Console.WriteLine("Write 0 to quit");
                 
                 var selectNum = Int32.Parse(Console.ReadLine());
@@ -62,6 +97,19 @@ namespace AutoStore
                     }
                 } else if( selectNum == 0){
                     loopOption = false;
+                } else if( selectNum == 4){
+                    try
+                    {
+                        Console.WriteLine("Enter the id of the car: ");
+                        var carId = Int32.Parse(Console.ReadLine());
+                        Analytics.PurchaseCar(carId, NewUserChecking);
+                        CarInventory = Analytics.CarList;
+                    }
+                    catch (ArgumentException ex)
+                    {
+                        
+                        Console.WriteLine(ex.Message);
+                    }
                 }
             }
         
