@@ -60,5 +60,14 @@ namespace AutoStore
 
         }
 
+        public double GetAverageMPG(){
+
+            return (from c in CarList select c.Mpg).Average();
+        }
+
+        public IEnumerable<double> GetUniqueSetOfCyclinders(){
+            return (from c in CarList select c.Cylinders).Distinct();
+        }
+
     }
 }

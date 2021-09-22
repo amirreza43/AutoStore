@@ -56,6 +56,8 @@ namespace AutoStore
                 Console.WriteLine("Write 2 to search the inventory by price range");
                 Console.WriteLine("Write 3 to search the inventory by other option");
                 Console.WriteLine("Write 4 to purchase a car by id");
+                Console.WriteLine("Write 5 to view average MPG across inventory.");
+                Console.WriteLine("Write 6 to view unique set of cyclinders");
                 Console.WriteLine("Write 0 to quit");
                 
                 var selectNum = Int32.Parse(Console.ReadLine());
@@ -110,6 +112,13 @@ namespace AutoStore
                         
                         Console.WriteLine(ex.Message);
                     }
+                }else if(selectNum==5){
+                    Console.WriteLine($"Average MPG across inventory: {Analytics.GetAverageMPG()}");
+                }else if(selectNum==6){
+                   var cyclinders= Analytics.GetUniqueSetOfCyclinders();
+                   foreach(var setOfCyclinders in cyclinders){
+                       Console.WriteLine(setOfCyclinders);
+                   }
                 }
             }
         
